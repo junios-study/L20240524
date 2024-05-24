@@ -1,50 +1,101 @@
 #include <iostream>
+#include <vector> //Data 저장, Container, STL
 
 using namespace std;
 
+//function overloading
+//name mangling
+//float Add(float A, float B)
+//{
+//	return A + B;
+//}
+//
+//int Add(int A, int B)
+//{
+//	return A + B;
+//}
+
+//template 함수
+//메타프로그래밍
+//Compile 시 생성 형태에 맞게
+//template<typename T, typename Y>
+//T Add(T A, Y B)
+//{
+//	return A + B;
+//}
+//
+//int main()
+//{
+//	cout << Add<int, int>(1, 2) << endl;
+//	cout << Add<float, float>(3.0f, 2.2f) << endl;
+//	cout << Add<int, float>(1, 2.2f) << endl;
+//	cout << Add<int, char>(1, 2.2f) << endl;
+//}
+//class IntArray
+//{
+//public:
+//	int Data[10];
+//};
+//
+//class FloatArray
+//{
+//public:
+//	float Data[10];
+//};
+
+//template<typename T>
+//class Array
+//{
+//public:
+//	T Data[10];
+//};
+//
+//int main()
+//{
+//	Array<int> Number1;
+//	Array<float> Number2;
+//	Array<string> Number3;
+//	Array<bool> Number4;
+//	Array<char> Number5;
+//
+//	return 0;
+//}
+
+#include "Player.h"
+#include "Monster.h"
+
+
+
 int main()
 {
-	int Size = 3;
-
-	int* PA = new int[Size];
-
-	for (int i = 0; i < Size; ++i)
+	vector<Monster*> MyMonstyer;
+	Player* MyPlayer = new Player();
+	while (true)
 	{
-		PA[i] = i + 1;
-	}
-	
-	srand(time(0));
-	int NewPosition = rand() % Size;
-	int NewValue = rand() % 100 + 100; //100 ~ 199
+		string Key;
+		cin >> Key;
+		if (Key == "1")
+		{
+			MyMonstyer.push_back(new Monster());
+		}
 
-	//그대로 옮기는거
-	int* NewPA = new int[Size+1];
-	for (int i = 0; i < NewPosition; ++i)
-	{
-		NewPA[i] = PA[i];
-	}
+		MyPlayer->Move();
 
-	//추가 로직
-	NewPA[NewPosition] = NewValue;
-
-	//한칸씩 밀어서 옮기기
-	for (int i = NewPosition + 1; i < Size + 1; ++i)
-	{
-		NewPA[i] = PA[i - 1];
+		for (int i = 0; i < MyMonstyer.size(); ++i)
+		{
+			MyMonstyer[i]->Move();
+			MyMonstyer[i]->Attack();
+		}
 	}
 
-	delete[] PA;
-	PA = NewPA;
-	NewPA = nullptr;
 
-	for (int i = 0; i < Size + 1; ++i)
+	delete MyPlayer;
+	for (int i = 0; i < MyMonstyer.size(); ++i)
 	{
-		cout << PA[i] << ", ";
+		delete MyMonstyer[i];
 	}
 
-	
-
-	delete[] NewPA;
+	MyMonstyer.clear();
 
 	return 0;
 }
